@@ -1,14 +1,33 @@
-const messageHandler = (bot) => {
-  bot.on("message", async (msg) => {
-    const text = msg.text;
-    const chatId = msg.chat.id;
-    console.log(msg);
-    if (text === "/start") {
-      return bot.sendMessage(chatId, "Welcome! Please choose your role:", startOptions);
-    }
+const UserModel = require("./models");
 
-    return bot.sendMessage(chatId, `Команда не обнаружена.`);
-  });
+const messageHandler = (bot) => {
+  try {
+    bot.on("message", async (msg) => {
+      const text = msg.text;
+      const chatId = msg.chat.id.toString();
+      console.log(msg);
+
+      if (text === "/start") {
+        const existingUser = await UserModel.findOne({ where: { chatId } });
+
+        if (existingUser) {
+          return bot.sendMessage(chatId, "You are already registered. Please choose your role:", startOptions);
+        }
+
+        await UserModel.create({ chatId });
+        return bot.sendMessage(chatId, "Welcome! Please choose your role:", startOptions);
+      }
+
+      if (text === "/info") {
+        const user = await UserModel.findOne({ chatId });
+        return bot.sendMessage(chatId, `Your Info ${user.role}`);
+      }
+
+      return bot.sendMessage(chatId, `Команда не обнаружена.`);
+    });
+  } catch (e) {
+    return bot.sendMessage(chatId, `ERROR: ${e}`);
+  }
 };
 
 const startOptions = {

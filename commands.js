@@ -1,7 +1,7 @@
 const botCommands = (bot) => {
   bot.setMyCommands([
-    { command: "/start", description: "Начальное start" },
-    { command: "/text", description: "Начальное text" },
+    { command: "/start", description: "START" },
+    { command: "/info", description: "GET INFO" },
     { command: "/test", description: "Начальное test" },
   ]);
 };
