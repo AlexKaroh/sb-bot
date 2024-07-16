@@ -1,9 +1,11 @@
-const botCommands = (bot) => {
-  bot.setMyCommands([
+const botCommands = (bot, role) => {
+  const commandsArr = [
     { command: "/start", description: "START" },
     { command: "/info", description: "GET INFO" },
-    { command: "/test", description: "Начальное test" },
-  ]);
+    { command: "/role", description: "SET ROLE" },
+  ];
+
+  bot.setMyCommands(commandsArr);
 };
 
 module.exports = botCommands;
